@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MessageSquare, Heart, Share, Eye, Clock, Code, Plus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Textarea } from "@/components/ui/textarea";
+import { MessageSquare, Heart, Share, Eye, Clock, ChevronDown, Send, ThumbsUp, ThumbsDown } from "lucide-react";
+import PageShell from "@/components/layout/PageShell";
+import SiteHeader from "@/components/layout/SiteHeader";
+import NewPostDialog from "@/components/community/NewPostDialog";
+import { useLocalStore } from "@/hooks/useLocalStore";
 
 const Community = () => {
-  const posts = [
+  const [sortBy, setSortBy] = useState("recent");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [posts, setPosts] = useLocalStore("community-posts", [
     {
       id: 1,
       title: "Best approach for solving DP problems?",
@@ -16,8 +25,15 @@ const Community = () => {
       views: 234,
       replies: 18,
       likes: 45,
+      dislikes: 2,
       timeAgo: "2 hours ago",
-      isPinned: false
+      isPinned: false,
+      isLiked: false,
+      isDisliked: false,
+      comments: [
+        { id: 1, author: "Sarah Kim", content: "I recommend starting with 1D DP problems first!", timeAgo: "1 hour ago" },
+        { id: 2, author: "Mike Rodriguez", content: "Practice on LeetCode's DP section systematically.", timeAgo: "30 mins ago" }
+      ]
     },
     {
       id: 2,
@@ -29,8 +45,14 @@ const Community = () => {
       views: 567,
       replies: 32,
       likes: 89,
+      dislikes: 3,
       timeAgo: "1 day ago",
-      isPinned: true
+      isPinned: true,
+      isLiked: false,
+      isDisliked: false,
+      comments: [
+        { id: 1, author: "John Doe", content: "Excellent tutorial! Very clear explanations.", timeAgo: "20 hours ago" }
+      ]
     },
     {
       id: 3,
@@ -42,53 +64,104 @@ const Community = () => {
       views: 156,
       replies: 12,
       likes: 23,
+      dislikes: 1,
       timeAgo: "3 hours ago",
-      isPinned: false
+      isPinned: false,
+      isLiked: false,
+      isDisliked: false,
+      comments: []
     }
-  ];
+  ]);
+  
+  const [newComment, setNewComment] = useState("");
+
+  const handleAddPost = (newPost) => {
+    const post = {
+      ...newPost,
+      id: Date.now(),
+      timestamp: new Date().toISOString(),
+      upvotes: 0,
+      replies: 0,
+      views: 0,
+      likes: 0,
+      dislikes: 0,
+      isLiked: false,
+      isDisliked: false,
+      comments: []
+    };
+    setPosts([post, ...posts]);
+  };
+
+  const handleVote = (postId, type) => {
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        if (type === 'like') {
+          if (post.isLiked) {
+            return { ...post, likes: post.likes - 1, isLiked: false };
+          } else {
+            return { 
+              ...post, 
+              likes: post.likes + 1, 
+              dislikes: post.isDisliked ? post.dislikes - 1 : post.dislikes,
+              isLiked: true, 
+              isDisliked: false 
+            };
+          }
+        } else {
+          if (post.isDisliked) {
+            return { ...post, dislikes: post.dislikes - 1, isDisliked: false };
+          } else {
+            return { 
+              ...post, 
+              dislikes: post.dislikes + 1, 
+              likes: post.isLiked ? post.likes - 1 : post.likes,
+              isDisliked: true, 
+              isLiked: false 
+            };
+          }
+        }
+      }
+      return post;
+    }));
+  };
+
+  const handleAddComment = (postId) => {
+    if (!newComment.trim()) return;
+    
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        const comment = {
+          id: Date.now(),
+          author: "You",
+          content: newComment,
+          timeAgo: "just now"
+        };
+        return { 
+          ...post, 
+          comments: [...post.comments, comment],
+          replies: post.replies + 1
+        };
+      }
+      return post;
+    }));
+    setNewComment("");
+  };
+
+  const filteredPosts = posts.filter(post => 
+    selectedCategory === "All" || post.category === selectedCategory
+  ).sort((a, b) => {
+    if (sortBy === "recent") return 0; // Simple ordering for now
+    if (sortBy === "top") return b.likes - a.likes;
+    if (sortBy === "discussed") return b.replies - a.replies;
+    return 0;
+  });
 
   const categories = ["All", "Discussion", "Tutorial", "Question", "Announcement"];
 
   return (
-    <div className="min-h-screen bg-midnight-blue">
-      {/* Navigation */}
-      <nav className="relative z-10 flex items-center justify-between px-8 py-6 border-b border-silver-gray/10">
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-royal-purple rounded-lg flex items-center justify-center">
-            <Code className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-white font-bold text-xl">NebulaCP</span>
-        </Link>
-        
-        <div className="hidden md:flex items-center space-x-8">
-          <Link to="/learn" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Learn
-          </Link>
-          <Link to="/problems" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Problems
-          </Link>
-          <Link to="/mentors" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Mentors
-          </Link>
-          <Link to="/community" className="text-royal-purple hover:text-white transition-colors cursor-pointer">
-            Community
-          </Link>
-          <Link to="/leaderboard" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Leaderboard
-          </Link>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" className="text-silver-gray hover:text-white hover:bg-transparent">
-            Sign In
-          </Button>
-          <Button className="bg-royal-purple hover:bg-royal-purple/90 text-white rounded-lg px-6">
-            Get Started
-          </Button>
-        </div>
-      </nav>
-
-      {/* Main Content */}
+    <PageShell>
+      <SiteHeader />
+      
       <div className="max-w-7xl mx-auto px-8 py-12">
         {/* Header */}
         <div className="flex items-center justify-between mb-12">
@@ -104,10 +177,7 @@ const Community = () => {
               experienced mentors in our vibrant community.
             </p>
           </div>
-          <Button className="bg-royal-purple hover:bg-royal-purple/90 text-white">
-            <Plus className="w-4 h-4 mr-2" />
-            New Post
-          </Button>
+          <NewPostDialog onAddPost={handleAddPost} />
         </div>
 
         {/* Community Stats */}
@@ -130,31 +200,48 @@ const Community = () => {
           </div>
         </div>
 
-        {/* Category Filters */}
+        {/* Filters and Sorting */}
         <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 mb-8">
-          <div className="flex items-center gap-4 flex-wrap">
-            <span className="text-white font-medium">Categories:</span>
-            <div className="flex gap-2 flex-wrap">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={category === "All" ? "default" : "ghost"}
-                  className={`rounded-full px-4 py-2 text-sm ${
-                    category === "All"
-                      ? "bg-royal-purple text-white"
-                      : "text-silver-gray hover:text-white"
-                  }`}
-                >
-                  {category}
-                </Button>
-              ))}
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-4 flex-wrap">
+              <span className="text-white font-medium">Categories:</span>
+              <div className="flex gap-2 flex-wrap">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={category === selectedCategory ? "default" : "ghost"}
+                    className={`rounded-full px-4 py-2 text-sm ${
+                      category === selectedCategory
+                        ? "bg-royal-purple text-white"
+                        : "text-silver-gray hover:text-white"
+                    }`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-white font-medium">Sort by:</span>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-40 bg-midnight-blue border-silver-gray/30 text-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-cloud-gray border-silver-gray/30">
+                  <SelectItem value="recent" className="text-white">Most Recent</SelectItem>
+                  <SelectItem value="top" className="text-white">Top Voted</SelectItem>
+                  <SelectItem value="discussed" className="text-white">Most Discussed</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
 
         {/* Posts List */}
         <div className="space-y-6">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <div
               key={post.id}
               className={`bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 hover:bg-cloud-gray/50 transition-all duration-300 ${
@@ -218,22 +305,76 @@ const Community = () => {
                     ))}
                   </div>
 
-                  {/* Post Stats */}
-                  <div className="flex items-center gap-6 text-sm text-silver-gray/80">
-                    <div className="flex items-center gap-2">
-                      <Heart className="w-4 h-4" />
-                      <span>{post.likes}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4" />
-                      <span>{post.replies}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Eye className="w-4 h-4" />
-                      <span>{post.views}</span>
+                  {/* Post Stats and Actions */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-6 text-sm text-silver-gray/80">
+                      <button 
+                        onClick={() => handleVote(post.id, 'like')}
+                        className={`flex items-center gap-2 hover:text-white transition-colors ${
+                          post.isLiked ? 'text-green-400' : ''
+                        }`}
+                      >
+                        <ThumbsUp className="w-4 h-4" />
+                        <span>{post.likes}</span>
+                      </button>
+                      <button 
+                        onClick={() => handleVote(post.id, 'dislike')}
+                        className={`flex items-center gap-2 hover:text-white transition-colors ${
+                          post.isDisliked ? 'text-red-400' : ''
+                        }`}
+                      >
+                        <ThumbsDown className="w-4 h-4" />
+                        <span>{post.dislikes}</span>
+                      </button>
+                      <div className="flex items-center gap-2">
+                        <MessageSquare className="w-4 h-4" />
+                        <span>{post.replies}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Eye className="w-4 h-4" />
+                        <span>{post.views}</span>
+                      </div>
                     </div>
                     <Button variant="ghost" className="text-silver-gray/80 hover:text-white p-0 h-auto">
                       <Share className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  {/* Comments Section */}
+                  {post.comments.length > 0 && (
+                    <Collapsible className="mt-4">
+                      <CollapsibleTrigger className="flex items-center gap-2 text-silver-gray hover:text-white transition-colors">
+                        <ChevronDown className="w-4 h-4" />
+                        <span>View {post.comments.length} comments</span>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-4 space-y-3">
+                        {post.comments.map((comment) => (
+                          <div key={comment.id} className="bg-midnight-blue/50 rounded-lg p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-white font-medium">{comment.author}</span>
+                              <span className="text-silver-gray/60 text-sm">• {comment.timeAgo}</span>
+                            </div>
+                            <p className="text-silver-gray/80">{comment.content}</p>
+                          </div>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
+
+                  {/* Add Comment */}
+                  <div className="mt-4 flex gap-3">
+                    <Textarea
+                      placeholder="Add a comment..."
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      className="bg-midnight-blue border-silver-gray/30 text-white min-h-[80px]"
+                    />
+                    <Button 
+                      onClick={() => handleAddComment(post.id)}
+                      className="bg-royal-purple hover:bg-royal-purple/90 text-white self-end"
+                      disabled={!newComment.trim()}
+                    >
+                      <Send className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
@@ -249,7 +390,7 @@ const Community = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 };
 

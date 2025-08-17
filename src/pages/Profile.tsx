@@ -1,44 +1,60 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Code, Trophy, Target, Clock } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Calendar, Trophy, Target, Clock, Edit, RotateCcw, ExternalLink } from "lucide-react";
+import PageShell from "@/components/layout/PageShell";
+import SiteHeader from "@/components/layout/SiteHeader";
+import RatingChart from "@/components/profile/RatingChart";
+import TopicsDonut from "@/components/profile/TopicsDonut";
+import { useLocalStore } from "@/hooks/useLocalStore";
 
 const Profile = () => {
+  const [profileData, setProfileData] = useLocalStore("profile-data", {
+    name: "John Doe",
+    bio: "Passionate competitive programmer and problem solver. Love tackling complex algorithms!",
+    connectedAccounts: {
+      codeforces: "",
+      leetcode: "",
+      atcoder: "",
+      cses: ""
+    }
+  });
+  
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [tempBio, setTempBio] = useState(profileData.bio);
+  const [tempAccounts, setTempAccounts] = useState(profileData.connectedAccounts);
+
+  const handleSaveBio = () => {
+    setProfileData({ ...profileData, bio: tempBio });
+    setIsEditingBio(false);
+  };
+
+  const handleSaveAccounts = () => {
+    setProfileData({ ...profileData, connectedAccounts: tempAccounts });
+  };
+
   return (
-    <div className="min-h-screen bg-midnight-blue">
-      <nav className="relative z-10 flex items-center justify-between px-8 py-6 border-b border-silver-gray/10">
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-royal-purple rounded-lg flex items-center justify-center">
-            <Code className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-white font-bold text-xl">NebulaCP</span>
-        </Link>
-        
-        <div className="hidden md:flex items-center space-x-8">
-          <Link to="/learn" className="text-silver-gray hover:text-white transition-colors">Learn</Link>
-          <Link to="/problems" className="text-silver-gray hover:text-white transition-colors">Problems</Link>
-          <Link to="/mentors" className="text-silver-gray hover:text-white transition-colors">Mentors</Link>
-          <Link to="/community" className="text-silver-gray hover:text-white transition-colors">Community</Link>
-          <Link to="/leaderboard" className="text-silver-gray hover:text-white transition-colors">Leaderboard</Link>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" className="text-silver-gray hover:text-white hover:bg-transparent">Sign In</Button>
-          <Button className="bg-royal-purple hover:bg-royal-purple/90 text-white rounded-lg px-6">Get Started</Button>
-        </div>
-      </nav>
-
+    <PageShell>
+      <SiteHeader />
+      
       <div className="max-w-7xl mx-auto px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 space-y-6">
+            {/* Profile Card */}
             <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-8">
               <div className="text-center mb-6">
                 <Avatar className="w-24 h-24 mx-auto mb-4">
-                  <AvatarFallback className="bg-royal-purple text-white text-2xl font-bold">JD</AvatarFallback>
+                  <AvatarFallback className="bg-royal-purple text-white text-2xl font-bold">
+                    {profileData.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
                 </Avatar>
-                <h2 className="text-2xl font-bold text-white mb-2">John Doe</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">{profileData.name}</h2>
                 <Badge className="bg-royal-purple/20 text-royal-purple">Expert</Badge>
               </div>
               
@@ -57,9 +73,78 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+
+            {/* Bio Section */}
+            <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-white">Bio</h3>
+                <Dialog open={isEditingBio} onOpenChange={setIsEditingBio}>
+                  <DialogTrigger asChild>
+                    <Button variant="ghost" size="sm" className="text-silver-gray hover:text-white">
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-cloud-gray border-silver-gray/20">
+                    <DialogHeader>
+                      <DialogTitle className="text-white">Edit Bio</DialogTitle>
+                    </DialogHeader>
+                    <Textarea
+                      value={tempBio}
+                      onChange={(e) => setTempBio(e.target.value)}
+                      className="bg-midnight-blue border-silver-gray/30 text-white min-h-[100px]"
+                      placeholder="Tell others about yourself..."
+                    />
+                    <div className="flex gap-2 justify-end">
+                      <Button variant="outline" onClick={() => setIsEditingBio(false)}>Cancel</Button>
+                      <Button onClick={handleSaveBio} className="bg-royal-purple hover:bg-royal-purple/90">Save</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-silver-gray/80 leading-relaxed">{profileData.bio}</p>
+            </div>
+
+            {/* Connected Accounts */}
+            <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-white">Connected Accounts</h3>
+                <Button variant="ghost" size="sm" className="text-silver-gray hover:text-white">
+                  <RotateCcw className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              <div className="space-y-4">
+                {Object.entries(tempAccounts).map(([platform, handle]) => (
+                  <div key={platform} className="space-y-2">
+                    <Label htmlFor={platform} className="text-white capitalize">{platform}</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id={platform}
+                        value={handle}
+                        onChange={(e) => setTempAccounts({...tempAccounts, [platform]: e.target.value})}
+                        placeholder={`${platform} handle`}
+                        className="bg-midnight-blue border-silver-gray/30 text-white"
+                      />
+                      {handle && (
+                        <Button variant="outline" size="sm" className="border-royal-purple/50 text-royal-purple">
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                <Button 
+                  onClick={handleSaveAccounts} 
+                  className="w-full bg-royal-purple hover:bg-royal-purple/90 text-white mt-4"
+                >
+                  Save Accounts
+                </Button>
+              </div>
+            </div>
           </div>
 
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6">
+            {/* Learning Progress */}
             <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-white mb-6">Learning Progress</h3>
               <Progress value={68} className="h-3 mb-4" />
@@ -79,6 +164,13 @@ const Profile = () => {
               </div>
             </div>
 
+            {/* Charts Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <RatingChart />
+              <TopicsDonut />
+            </div>
+
+            {/* Recent Activity */}
             <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-white mb-6">Recent Activity</h3>
               <div className="space-y-4">
@@ -92,12 +184,22 @@ const Profile = () => {
                   <span className="text-white">Completed Data Structures module</span>
                   <span className="text-silver-gray text-sm ml-auto">1 day ago</span>
                 </div>
+                <div className="flex items-center gap-4">
+                  <Trophy className="w-5 h-5 text-green-400" />
+                  <span className="text-white">Achieved 15-day solving streak</span>
+                  <span className="text-silver-gray text-sm ml-auto">2 days ago</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Target className="w-5 h-5 text-blue-400" />
+                  <span className="text-white">Reached Expert level on Codeforces</span>
+                  <span className="text-silver-gray text-sm ml-auto">1 week ago</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 };
 
