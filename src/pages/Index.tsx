@@ -1,61 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Users, Target, BookOpen, Code, Trophy, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
+import PageShell from "@/components/layout/PageShell";
+import SiteHeader from "@/components/layout/SiteHeader";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-midnight-blue relative overflow-hidden">
-      {/* Background gradient effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-royal-purple/10 via-transparent to-royal-purple/5" />
-      <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-royal-purple/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-royal-purple/15 rounded-full blur-2xl" />
-      
-      {/* Navigation */}
-      <nav className="relative z-10 flex items-center justify-between px-8 py-6">
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-royal-purple rounded-lg flex items-center justify-center">
-            <Code className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-white font-bold text-xl">
-            NebulaCP
-          </span>
-        </Link>
-        
-        <div className="hidden md:flex items-center space-x-8">
-          <Link to="/learn" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Learn
-          </Link>
-          <Link to="/problems" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Problems
-          </Link>
-          <Link to="/mentors" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Mentors
-          </Link>
-          <Link to="/community" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Community
-          </Link>
-          <Link to="/leaderboard" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
-            Leaderboard
-          </Link>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            className="text-silver-gray hover:text-white hover:bg-transparent"
-          >
-            Sign In
-          </Button>
-          <Button
-            className="bg-royal-purple hover:bg-royal-purple/90 text-white rounded-lg px-6"
-          >
-            Get Started
-          </Button>
-        </div>
-      </nav>
+    <PageShell>
+      <SiteHeader />
 
       {/* Main hero content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-8 pt-16 pb-24">
+      <div className="max-w-7xl mx-auto px-8 pt-16 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Hero text */}
           <div>
@@ -168,7 +123,7 @@ const Index = () => {
           <MessageSquare className="w-5 h-5 text-white" />
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 };
 
