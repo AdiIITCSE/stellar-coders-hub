@@ -19,6 +19,12 @@ export default {
 		},
 		extend: {
 			colors: {
+				/* NebulaCP Custom Colors */
+				'midnight-blue': 'hsl(var(--midnight-blue))',
+				'cloud-gray': 'hsl(var(--cloud-gray))',
+				'royal-purple': 'hsl(var(--royal-purple))',
+				'silver-gray': 'hsl(var(--silver-gray))',
+				
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
