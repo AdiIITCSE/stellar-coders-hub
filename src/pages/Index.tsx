@@ -1,16 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { Users, Target, BookOpen, Code, Trophy, MessageSquare } from "lucide-react";
+import { Users, Target, BookOpen, Trophy, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageShell from "@/components/layout/PageShell";
 import SiteHeader from "@/components/layout/SiteHeader";
+
 
 const Index = () => {
   return (
     <PageShell>
       <SiteHeader />
 
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 -z-10 animated-bg"></div>
+
       {/* Main hero content */}
-      <div className="max-w-7xl mx-auto px-8 pt-16 pb-24">
+      <div className="max-w-7xl mx-auto px-8 pt-16 pb-24 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Hero text */}
           <div>
@@ -22,7 +26,7 @@ const Index = () => {
               <br />
               Climb faster
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-silver-gray/90 mb-12 max-w-3xl leading-relaxed">
               Learn algorithms the right way, grind topic-wise DSA, and crush rating 
               ladders — with mentors and a global community.

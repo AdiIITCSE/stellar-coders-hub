@@ -40,3 +40,26 @@
 .read-the-docs {
   color: #888;
 }
+
+
+@keyframes bgMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(270deg, #7C3AED, #8B5CF6, #C084FC, #818CF8);
+  background-size: 600% 600%;
+  animation: bgMove 16s ease infinite;
+  z-index: -10;
+  filter: brightness(0.6);
+}
