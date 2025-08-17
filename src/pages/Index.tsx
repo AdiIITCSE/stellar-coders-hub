@@ -1,120 +1,138 @@
 import { Button } from "@/components/ui/button";
+import { Users, Target, BookOpen, Code } from "lucide-react";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-midnight-blue relative overflow-hidden">
       {/* Background gradient effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-royal-purple/10 via-transparent to-royal-purple/5" />
-      <div className="absolute top-0 right-0 w-96 h-96 bg-royal-purple/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-royal-purple/15 rounded-full blur-2xl" />
+      <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-royal-purple/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-royal-purple/15 rounded-full blur-2xl" />
       
       {/* Navigation */}
       <nav className="relative z-10 flex items-center justify-between px-8 py-6">
-        <div className="text-white font-bold text-xl tracking-wider">
-          COMPETITIVE<br />PROGRAMMING
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-royal-purple rounded-lg flex items-center justify-center">
+            <Code className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-white font-bold text-xl">
+            NebulaCP
+          </span>
         </div>
         
-        <div className="flex items-center space-x-8">
-          <span className="text-silver-gray hover:text-white transition-colors tracking-wider cursor-pointer">
-            ETEI
+        <div className="hidden md:flex items-center space-x-8">
+          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+            Learn
           </span>
-          <span className="text-silver-gray hover:text-white transition-colors tracking-wider cursor-pointer">
-            BUSINESS
+          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+            Problems
           </span>
+          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+            Mentors
+          </span>
+          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+            Community
+          </span>
+          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+            Leaderboard
+          </span>
+        </div>
+
+        <div className="flex items-center space-x-4">
           <Button
-            variant="outline"
-            className="border-white/20 text-white hover:bg-white/10 rounded-full px-6 py-2 tracking-wider"
+            variant="ghost"
+            className="text-silver-gray hover:text-white hover:bg-transparent"
           >
-            WATCH
+            Sign In
+          </Button>
+          <Button
+            className="bg-royal-purple hover:bg-royal-purple/90 text-white rounded-lg px-6"
+          >
+            Get Started
           </Button>
         </div>
       </nav>
 
-      {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-8">
-        {/* Hero text */}
-        <div className="text-center mb-12">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-8 tracking-tight leading-tight">
-            ENHANCE YOUR<br />
-            ALGORITHMIC
+      {/* Main hero content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-8 pt-16 pb-24">
+        <div className="max-w-4xl">
+          {/* Hero text */}
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            Practice sharper.
+            <br />
             <span className="bg-gradient-to-r from-royal-purple to-purple-400 bg-clip-text text-transparent">
-              SKILLS
+              Climb faster.
             </span>
           </h1>
           
-          {/* CTA Button */}
-          <Button
-            className="bg-gradient-to-r from-royal-purple to-purple-600 hover:from-purple-600 hover:to-royal-purple text-white border-0 rounded-full px-8 py-4 text-lg font-medium tracking-wider shadow-lg hover:shadow-royal-purple/25 transition-all duration-300 transform hover:scale-105"
-          >
-            GET STARTED NOW
-          </Button>
+          <p className="text-xl md:text-2xl text-silver-gray/90 mb-12 max-w-3xl leading-relaxed">
+            Learn algorithms the right way, grind topic-wise DSA, and crush rating 
+            ladders — with mentors and a global community.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-16">
+            <Button
+              className="bg-royal-purple hover:bg-royal-purple/90 text-white px-8 py-4 text-lg rounded-full font-medium"
+            >
+              Start Learning
+            </Button>
+            <Button
+              variant="outline"
+              className="border-silver-gray/30 text-white hover:bg-white/5 px-8 py-4 text-lg rounded-full font-medium"
+            >
+              Browse Rating Ladders
+            </Button>
+          </div>
+
+          {/* Stats */}
+          <div className="flex flex-col sm:flex-row gap-8 text-silver-gray/80">
+            <div className="flex items-center gap-3">
+              <Users className="w-5 h-5" />
+              <span className="text-lg">10k+ Active Learners</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Target className="w-5 h-5" />
+              <span className="text-lg">5k+ Problems Solved Daily</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Feature cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl mt-16">
-          {/* LEETCODE Card */}
-          <div className="bg-cloud-gray/80 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 hover:bg-cloud-gray/90 transition-all duration-300 hover:shadow-lg hover:shadow-royal-purple/10">
-            <h3 className="text-white text-xl font-bold mb-4 tracking-wider">
-              LEETCODE
-            </h3>
-            <p className="text-silver-gray/80 text-sm leading-relaxed">
-              SOLVE ALGORITHMIC PROBLEMS WITH OPTIMIZED SOLUTIONS. PRACTICE DATA STRUCTURES AND ALGORITHMS WITH REAL INTERVIEW QUESTIONS. BUILD YOUR CODING CONFIDENCE.
+      {/* Feature sections at bottom */}
+      <div className="relative z-10 max-w-7xl mx-auto px-8 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Learn section */}
+          <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-8 hover:bg-cloud-gray/50 transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <BookOpen className="w-6 h-6 text-royal-purple" />
+              <h3 className="text-white text-xl font-bold">Learn</h3>
+            </div>
+            <p className="text-silver-gray/80 leading-relaxed">
+              Master algorithms from foundations to advanced topics. Structured learning 
+              paths with curated resources and progress tracking.
             </p>
           </div>
 
-          {/* SOLVE FIRST Card */}
-          <div className="bg-cloud-gray/80 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 hover:bg-cloud-gray/90 transition-all duration-300 hover:shadow-lg hover:shadow-royal-purple/10">
-            <h3 className="text-white text-xl font-bold mb-4 tracking-wider">
-              SOLVE FIRST
-            </h3>
-            <p className="text-silver-gray/80 text-sm leading-relaxed">
-              START WITH THE FUNDAMENTALS AND PROGRESS TO ADVANCED TOPICS. STRUCTURED LEARNING PATH WITH GUIDED TUTORIALS AND STEP-BY-STEP EXPLANATIONS.
-            </p>
-          </div>
-
-          {/* CONTEST Card */}
-          <div className="bg-cloud-gray/80 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 hover:bg-cloud-gray/90 transition-all duration-300 hover:shadow-lg hover:shadow-royal-purple/10">
-            <h3 className="text-white text-xl font-bold mb-4 tracking-wider">
-              CONTEST
-            </h3>
-            <p className="text-silver-gray/80 text-sm leading-relaxed">
-              PARTICIPATE IN COMPETITIVE PROGRAMMING CONTESTS. CHALLENGE YOURSELF WITH TIME-LIMITED PROBLEMS AND CLIMB THE GLOBAL LEADERBOARD.
+          {/* Rating section */}
+          <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-8 hover:bg-cloud-gray/50 transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <Code className="w-6 h-6 text-royal-purple" />
+              <h3 className="text-white text-xl font-bold">2400+ Rating</h3>
+            </div>
+            <p className="text-silver-gray/80 leading-relaxed">
+              Challenge yourself with competitive programming problems. Climb rating 
+              ladders and compete with the global community.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Decorative curved elements */}
-      <div className="absolute top-0 right-0 w-full h-32">
-        <svg viewBox="0 0 1200 120" className="w-full h-full">
-          <path
-            d="M0,0 C300,60 600,60 900,20 C1050,0 1150,10 1200,0 L1200,120 L0,120 Z"
-            fill="url(#gradient1)"
-            opacity="0.1"
-          />
-          <defs>
-            <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style={{ stopColor: '#6045EA', stopOpacity: 0.3 }} />
-              <stop offset="100%" style={{ stopColor: '#6045EA', stopOpacity: 0.1 }} />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full h-32">
-        <svg viewBox="0 0 1200 120" className="w-full h-full">
-          <path
-            d="M0,120 C300,60 600,60 900,100 C1050,120 1150,110 1200,120 L1200,0 L0,0 Z"
-            fill="url(#gradient2)"
-            opacity="0.1"
-          />
-          <defs>
-            <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style={{ stopColor: '#6045EA', stopOpacity: 0.1 }} />
-              <stop offset="100%" style={{ stopColor: '#6045EA', stopOpacity: 0.3 }} />
-            </linearGradient>
-          </defs>
-        </svg>
+      {/* Floating elements */}
+      <div className="absolute bottom-20 right-20 w-16 h-16 bg-royal-purple/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-royal-purple/30">
+        <div className="w-8 h-8 bg-royal-purple rounded-lg flex items-center justify-center">
+          <Code className="w-5 h-5 text-white" />
+        </div>
       </div>
     </div>
   );
