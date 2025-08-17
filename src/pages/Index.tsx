@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Users, Target, BookOpen, Code } from "lucide-react";
+import { Users, Target, BookOpen, Code, Trophy, MessageSquare } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -11,31 +12,31 @@ const Index = () => {
       
       {/* Navigation */}
       <nav className="relative z-10 flex items-center justify-between px-8 py-6">
-        <div className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-royal-purple rounded-lg flex items-center justify-center">
             <Code className="w-5 h-5 text-white" />
           </div>
           <span className="text-white font-bold text-xl">
             NebulaCP
           </span>
-        </div>
+        </Link>
         
         <div className="hidden md:flex items-center space-x-8">
-          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+          <Link to="/learn" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
             Learn
-          </span>
-          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+          </Link>
+          <Link to="/problems" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
             Problems
-          </span>
-          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+          </Link>
+          <Link to="/mentors" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
             Mentors
-          </span>
-          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+          </Link>
+          <Link to="/community" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
             Community
-          </span>
-          <span className="text-silver-gray hover:text-white transition-colors cursor-pointer">
+          </Link>
+          <Link to="/leaderboard" className="text-silver-gray hover:text-white transition-colors cursor-pointer">
             Leaderboard
-          </span>
+          </Link>
         </div>
 
         <div className="flex items-center space-x-4">
@@ -55,83 +56,116 @@ const Index = () => {
 
       {/* Main hero content */}
       <div className="relative z-10 max-w-7xl mx-auto px-8 pt-16 pb-24">
-        <div className="max-w-4xl">
-          {/* Hero text */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-            Practice sharper.
-            <br />
-            <span className="bg-gradient-to-r from-royal-purple to-purple-400 bg-clip-text text-transparent">
-              Climb faster.
-            </span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-silver-gray/90 mb-12 max-w-3xl leading-relaxed">
-            Learn algorithms the right way, grind topic-wise DSA, and crush rating 
-            ladders — with mentors and a global community.
-          </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left side - Hero text */}
+          <div>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+              Practice{" "}
+              <span className="bg-gradient-to-r from-royal-purple to-purple-400 bg-clip-text text-transparent">
+                sharper
+              </span>
+              <br />
+              Climb faster
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-silver-gray/90 mb-12 max-w-3xl leading-relaxed">
+              Learn algorithms the right way, grind topic-wise DSA, and crush rating 
+              ladders — with mentors and a global community.
+            </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <Button
-              className="bg-royal-purple hover:bg-royal-purple/90 text-white px-8 py-4 text-lg rounded-full font-medium"
-            >
-              Start Learning
-            </Button>
-            <Button
-              variant="outline"
-              className="border-silver-gray/30 text-white hover:bg-white/5 px-8 py-4 text-lg rounded-full font-medium"
-            >
-              Browse Rating Ladders
-            </Button>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-16">
+              <Link to="/learn">
+                <Button
+                  className="bg-royal-purple hover:bg-royal-purple/90 text-white px-8 py-4 text-lg rounded-full font-medium"
+                >
+                  Start Learning
+                </Button>
+              </Link>
+              <Link to="/problems">
+                <Button
+                  variant="outline"
+                  className="border-silver-gray/30 text-white hover:bg-white/5 px-8 py-4 text-lg rounded-full font-medium"
+                >
+                  Browse Rating Ladders
+                </Button>
+              </Link>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-white mb-1">500+</div>
+                <div className="text-silver-gray/80">Problems</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-white mb-1">50+</div>
+                <div className="text-silver-gray/80">Mentors</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-white mb-1">10K+</div>
+                <div className="text-silver-gray/80">Students</div>
+              </div>
+            </div>
           </div>
 
-          {/* Stats */}
-          <div className="flex flex-col sm:flex-row gap-8 text-silver-gray/80">
-            <div className="flex items-center gap-3">
-              <Users className="w-5 h-5" />
-              <span className="text-lg">10k+ Active Learners</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Target className="w-5 h-5" />
-              <span className="text-lg">5k+ Problems Solved Daily</span>
-            </div>
+          {/* Right side - Feature cards */}
+          <div className="grid grid-cols-2 gap-4">
+            <Link to="/learn">
+              <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 hover:bg-cloud-gray/50 transition-all duration-300 hover:scale-105">
+                <div className="w-12 h-12 bg-royal-purple rounded-xl flex items-center justify-center mb-4">
+                  <BookOpen className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white text-xl font-bold mb-2">Learn</h3>
+                <p className="text-silver-gray/80 text-sm">
+                  Master algorithms with curated content
+                </p>
+              </div>
+            </Link>
+
+            <Link to="/problems">
+              <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 hover:bg-cloud-gray/50 transition-all duration-300 hover:scale-105">
+                <div className="w-12 h-12 bg-royal-purple rounded-xl flex items-center justify-center mb-4">
+                  <Target className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white text-xl font-bold mb-2">Practice</h3>
+                <p className="text-silver-gray/80 text-sm">
+                  Solve problems by topic or rating
+                </p>
+              </div>
+            </Link>
+
+            <Link to="/mentors">
+              <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 hover:bg-cloud-gray/50 transition-all duration-300 hover:scale-105">
+                <div className="w-12 h-12 bg-royal-purple rounded-xl flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white text-xl font-bold mb-2">Mentors</h3>
+                <p className="text-silver-gray/80 text-sm">
+                  Get guidance from experts
+                </p>
+              </div>
+            </Link>
+
+            <Link to="/leaderboard">
+              <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-6 hover:bg-cloud-gray/50 transition-all duration-300 hover:scale-105">
+                <div className="w-12 h-12 bg-royal-purple rounded-xl flex items-center justify-center mb-4">
+                  <Trophy className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white text-xl font-bold mb-2">Compete</h3>
+                <p className="text-silver-gray/80 text-sm">
+                  Join the global leaderboard
+                </p>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Feature sections at bottom */}
-      <div className="relative z-10 max-w-7xl mx-auto px-8 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Learn section */}
-          <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-8 hover:bg-cloud-gray/50 transition-all duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <BookOpen className="w-6 h-6 text-royal-purple" />
-              <h3 className="text-white text-xl font-bold">Learn</h3>
-            </div>
-            <p className="text-silver-gray/80 leading-relaxed">
-              Master algorithms from foundations to advanced topics. Structured learning 
-              paths with curated resources and progress tracking.
-            </p>
-          </div>
-
-          {/* Rating section */}
-          <div className="bg-cloud-gray/40 backdrop-blur-sm border border-silver-gray/10 rounded-2xl p-8 hover:bg-cloud-gray/50 transition-all duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <Code className="w-6 h-6 text-royal-purple" />
-              <h3 className="text-white text-xl font-bold">2400+ Rating</h3>
-            </div>
-            <p className="text-silver-gray/80 leading-relaxed">
-              Challenge yourself with competitive programming problems. Climb rating 
-              ladders and compete with the global community.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Floating elements */}
-      <div className="absolute bottom-20 right-20 w-16 h-16 bg-royal-purple/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-royal-purple/30">
+      {/* Floating microphone icon */}
+      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-royal-purple/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-royal-purple/30">
         <div className="w-8 h-8 bg-royal-purple rounded-lg flex items-center justify-center">
-          <Code className="w-5 h-5 text-white" />
+          <MessageSquare className="w-5 h-5 text-white" />
         </div>
       </div>
     </div>
